@@ -2,11 +2,20 @@
 
 
 	<!-- global properties for this build file -->
-	<property name="source.dir" location="src" />
+	<property name="source.dir" location="src/main" />
 	<property name="build.dir" location="bin" />
+	<property name="tests.dir" location="src/tests" />
 	<property name="doc.dir" location="doc" />
 
 
+	<!-- Run jUnit -->
+
+	<path id="junit.classpath.path">
+		<pathelement location="lib/junit.jar" />
+		<pathelement
+			location="lib/org.hamcrest.core_1.3.0.v20180420-1519" />
+		<pathelement location="${tests.dir}" />
+	</path>
 
 	<!-- Delete the build & doc directories and Emacs backup (*~) files -->
 	<target name="clean" description="tidy up the workspace">
@@ -33,19 +42,16 @@
 
 	<!-- Generate javadocs for current project into ${doc.dir} -->
 	<target name="doc" description="generate documentation">
-		<javadoc sourcepath="${source.dir}" destdir="${doc.dir}" />
+		<javac includeantruntime="false" srcdir="${source.dir}"	destdir="${doc.dir}" />
 	</target>
+	
+	<jar basedir="bin" destfile="jar/aplicacao.jar" />
 
-	<!-- Run jUnit -->
-	<target name="junit" depends="compile">
-		<path id="junit.classpath.path">
-			<pathelement location="lib/junit.jar" />
-			<pathelement location="lib/org.hamcrest.core_1.3.0.v20180420-1519" />
-			<pathelement location="${build.dir}" />
-		</path>
-	</target>
 
-	<target name="main" depends="clean, init, compile, doc, junit">
+
+
+
+	<target name="main" depends="clean, init, compile, doc">
 		<description>Main target</description>
 	</target>
 
